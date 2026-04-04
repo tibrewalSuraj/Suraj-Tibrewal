@@ -1,0 +1,270 @@
+<div class="portfolio">
+  <header class="pf-nav">
+    <div class="pf-nav-inner">
+      <a class="pf-logo" href="#" (click)="$event.preventDefault(); scrollTo('hero')" aria-label="ST — Home">
+        <img src="/st-logo.png" alt="ST" width="140" height="48" />
+      </a>
+      <div class="pf-nav-right">
+        <nav class="pf-nav-links" aria-label="Primary">
+          <button type="button" class="pf-nav-link" (click)="scrollTo('about')">About</button>
+          <button type="button" class="pf-nav-link" (click)="scrollTo('skills')">Skills</button>
+          <button type="button" class="pf-nav-link" (click)="scrollTo('experience')">Experience</button>
+          <button type="button" class="pf-nav-link" (click)="scrollTo('projects')">Projects</button>
+          <button type="button" class="pf-nav-link" (click)="scrollTo('education')">Education</button>
+          <button type="button" class="pf-nav-link" (click)="scrollTo('contact')">Contact</button>
+        </nav>
+        <p-button label="Hire me" icon="pi pi-send" styleClass="pf-nav-cta" (onClick)="scrollTo('contact')" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="pf-section pf-hero">
+      <div class="pf-container pf-hero-grid">
+        <div class="pf-hero-visual">
+          <div class="pf-photo-frame">
+            <img src="/surajPic.png" [alt]="developerName + ' — professional portrait'" width="480" height="480" />
+          </div>
+          <div class="pf-hero-accent" aria-hidden="true"></div>
+        </div>
+        <div class="pf-hero-copy">
+          <p class="pf-eyebrow">{{ heroLocationLine }} · {{ contactPhoneDisplay }} · {{ contactEmail }}</p>
+          <h1 class="pf-hero-title">Hi, I'm <span class="pf-gold-text">{{ developerName }}</span></h1>
+          <p class="pf-hero-subtitle">{{ heroTagline }}</p>
+          <p class="pf-hero-lead">{{ heroLead }}</p>
+          <div class="pf-hero-actions">
+            <a class="pf-btn pf-btn-solid" [href]="cvHref" download>
+              <i class="pi pi-download" aria-hidden="true"></i>
+              Download CV
+            </a>
+            <p-button label="Contact Me" icon="pi pi-envelope" [outlined]="true" styleClass="pf-btn-outline"
+              [rounded]="true" (onClick)="scrollTo('contact')" />
+          </div>
+          <div class="pf-social" role="list">
+            @for (s of socials; track s.label) {
+            <a class="pf-social-link" [href]="s.href" target="_blank" rel="noopener noreferrer"
+              [attr.aria-label]="s.label" role="listitem">
+              <i [class]="s.icon" aria-hidden="true"></i>
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="pf-section pf-about">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Introduction</p>
+          <h2 class="pf-section-title">About Me</h2>
+          <p class="pf-section-desc pf-prose">{{ professionalSummary }}</p>
+        </header>
+        <div class="pf-stat-grid">
+          @for (s of aboutStats; track s.label) {
+          <p-card styleClass="pf-stat-card">
+            <div class="pf-stat-inner">
+              <span class="pf-stat-value">{{ s.value }}</span>
+              <span class="pf-stat-label">{{ s.label }}</span>
+              <p class="pf-stat-detail">{{ s.detail }}</p>
+            </div>
+          </p-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="pf-section pf-skills">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Capabilities</p>
+          <h2 class="pf-section-title">Technical Skills</h2>
+          <p class="pf-section-desc">
+            {{ skillsSectionExpanded() ? skillsSummaryFull : skillsSummaryShort }}
+          </p>
+        </header>
+        <div id="skills-grid-region" class="pf-skills-grid">
+          @for (sk of visibleSkills(); track sk.name) {
+          <div class="pf-skill-card">
+            <div class="pf-skill-icon" aria-hidden="true">
+              <i [class]="sk.icon"></i>
+            </div>
+            <span class="pf-skill-name">{{ sk.name }}</span>
+          </div>
+          }
+        </div>
+        @if (showSkillsReadMore()) {
+        <div class="pf-read-more-wrap">
+          <button type="button" class="pf-read-more-btn" (click)="toggleSkillsReadMore()"
+            [attr.aria-expanded]="skillsSectionExpanded()" aria-controls="skills-grid-region">
+            {{ skillsSectionExpanded() ? 'Read less' : 'Read more' }}
+            <i [class]="skillsSectionExpanded() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" aria-hidden="true"></i>
+          </button>
+        </div>
+        }
+      </div>
+    </section>
+
+    <section id="experience" class="pf-section pf-experience">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Career</p>
+          <h2 class="pf-section-title">Professional Experience</h2>
+          <p class="pf-section-desc">
+            Angular frontend development for enterprise applications at Tecdune Services LLP, delivering
+            DataGardener Solutions.
+          </p>
+        </header>
+        <p-timeline [value]="experience" align="left" layout="vertical" styleClass="pf-timeline">
+          <ng-template pTemplate="marker" let-e>
+            <span class="pf-timeline-dot"></span>
+          </ng-template>
+          <ng-template pTemplate="opposite" let-e>
+            <div class="pf-tl-opposite">
+              <span class="pf-tl-company">{{ e.company }}</span>
+              <span class="pf-tl-range">{{ e.range }}</span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="content" let-e>
+            <div class="pf-tl-card">
+              <h3 class="pf-tl-role">{{ e.role }}</h3>
+              <ul class="pf-tl-points">
+                @for (pt of e.points; track pt) {
+                <li>{{ pt }}</li>
+                }
+              </ul>
+            </div>
+          </ng-template>
+        </p-timeline>
+      </div>
+    </section>
+
+    <section id="projects" class="pf-section pf-projects">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Selected work</p>
+          <h2 class="pf-section-title">Projects</h2>
+          <p class="pf-section-desc">
+            Flagship work on the DataGardener web platform—dashboards, analytics UI, and performance at scale.
+          </p>
+        </header>
+        <div class="pf-project-grid">
+          @for (p of projects; track p.title) {
+          <article class="pf-project-card">
+            <a class="pf-project-image-link" [href]="p.link" target="_blank" rel="noopener noreferrer"
+              [attr.aria-label]="'Open project: ' + p.title">
+              <img [src]="p.image" [alt]="'Screenshot preview for ' + p.title" loading="lazy" />
+            </a>
+            <div class="pf-project-body">
+              <h3 class="pf-project-title">{{ p.title }}</h3>
+              <p class="pf-project-desc">{{ p.description }}</p>
+              <div class="pf-project-tags">
+                @for (t of p.tags; track t) {
+                <p-tag [value]="t" styleClass="pf-tag" />
+                }
+              </div>
+              <p-button label="View project" icon="pi pi-arrow-right" iconPos="right" [link]="true"
+                styleClass="pf-project-btn" (onClick)="openProject(p.link)" />
+            </div>
+          </article>
+          }
+        </div>
+        <div class="pf-projects-more">
+          <p-button label="Discuss a similar build" icon="pi pi-envelope" [outlined]="true" styleClass="pf-btn-outline"
+            (onClick)="scrollTo('contact')" />
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="pf-section pf-education">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Academic background</p>
+          <h2 class="pf-section-title">Education</h2>
+          <p class="pf-section-desc">Degrees from Magadh University and senior secondary from CBSE &amp; BSEB Patna.</p>
+        </header>
+        <div class="pf-edu-grid">
+          @for (ed of education; track ed.degree + ed.period) {
+          <p-card styleClass="pf-edu-card">
+            <div class="pf-edu-inner">
+              <span class="pf-edu-degree">{{ ed.degree }}</span>
+              <span class="pf-edu-school">{{ ed.institution }}</span>
+              <span class="pf-edu-period">{{ ed.period }}</span>
+            </div>
+          </p-card>
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="pf-section pf-contact">
+      <div class="pf-container">
+        <header class="pf-section-head">
+          <p class="pf-eyebrow">Get in touch</p>
+          <h2 class="pf-section-title">Contact</h2>
+          <p class="pf-section-desc">
+            Based in Delhi, India. Share your Angular or frontend hiring needs—I’ll reply as soon as I can.
+          </p>
+        </header>
+        <div class="pf-contact-grid">
+          <div class="pf-contact-details">
+            <p-card header="Direct" styleClass="pf-detail-card">
+              <div class="pf-detail-block">
+                <span class="pf-detail-label">Location</span>
+                <span class="pf-detail-value pf-detail-text">{{ heroLocationLine }}</span>
+              </div>
+              <div class="pf-detail-block">
+                <span class="pf-detail-label">Email</span>
+                <a class="pf-detail-value" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+              </div>
+              <div class="pf-detail-block">
+                <span class="pf-detail-label">Phone</span>
+                <a class="pf-detail-value" [href]="'tel:' + contactPhoneTel">{{ contactPhoneDisplay }}</a>
+              </div>
+              <div class="pf-detail-block">
+                <span class="pf-detail-label">Social</span>
+                <div class="pf-social pf-social-inline">
+                  @for (s of socials; track s.label) {
+                  <a class="pf-social-link" [href]="s.href" target="_blank" rel="noopener noreferrer"
+                    [attr.aria-label]="s.label">
+                    <i [class]="s.icon" aria-hidden="true"></i>
+                  </a>
+                  }
+                </div>
+              </div>
+            </p-card>
+          </div>
+          <p-card header="Send a message" styleClass="pf-form-card">
+            @if (formSent()) {
+            <p class="pf-form-success" role="status">Thanks—your message has been noted. I'll get back to you soon.</p>
+            }
+            <form class="pf-form" (ngSubmit)="submitContact()">
+              <label class="pf-field">
+                <span>Name</span>
+                <input pInputText name="name" [(ngModel)]="contactName" placeholder="Your name" autocomplete="name"
+                  required />
+              </label>
+              <label class="pf-field">
+                <span>Email</span>
+                <input pInputText type="email" name="email" [(ngModel)]="contactEmailForm" placeholder="you@company.com"
+                  autocomplete="email" required />
+              </label>
+              <label class="pf-field">
+                <span>Message</span>
+                <textarea pTextarea name="message" [(ngModel)]="contactMessage" rows="5"
+                  placeholder="Tell me about your project…" required></textarea>
+              </label>
+              <p-button type="submit" label="Send message" icon="pi pi-send" styleClass="pf-btn-primary pf-submit" />
+            </form>
+          </p-card>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pf-footer">
+    <div class="pf-container pf-footer-inner">
+      <span class="pf-footer-copy">© {{ year }} {{ developerName }}. All rights reserved.</span>
+      <span class="pf-footer-note">Built with Angular &amp; PrimeNG</span>
+    </div>
+  </footer>
+</div>

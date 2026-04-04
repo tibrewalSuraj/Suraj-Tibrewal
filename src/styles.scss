@@ -1,0 +1,25 @@
+@import 'primeicons/primeicons.css';
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --p-primary-color: #1d4ed8;
+  --p-primary-contrast-color: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: #ffffff;
+  color: #0c1929;
+  -webkit-font-smoothing: antialiased;
+}
+
+.portfolio-host {
+  min-height: 100vh;
+}
