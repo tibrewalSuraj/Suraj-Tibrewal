@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { PortfolioComponent } from './portfolio/portfolio.component';
-
-export const routes: Routes = [{ path: '', component: PortfolioComponent }];
+export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./portfolio/portfolio.component').then((m) => m.PortfolioComponent),
+  },
+];
