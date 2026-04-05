@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
@@ -16,8 +16,8 @@ export interface SkillItem {
 
 export interface ExperienceItem {
   company: string;
-  range: string;
-  role: string;
+  range?: string;
+  role?: string;
   points: string[];
 }
 
@@ -68,7 +68,7 @@ export class PortfolioComponent {
   readonly contactPhoneDisplay = '+91 81028 80733';
 
   readonly professionalSummary =
-    'Angular Developer with 3+ years of experience in building scalable, high-performance web applications using Angular 14–17, TypeScript, PrimeNG, and RxJS. Proven ability to create reusable components, integrate REST APIs, optimize UI performance, and deliver enterprise-level dashboards in Agile environments.';
+    'Angular Developer with 4+ years of experience in building scalable, high-performance web applications using Angular 14–17, TypeScript, PrimeNG, and RxJS. Proven ability to create reusable components, integrate REST APIs, optimize UI performance, and deliver enterprise-level dashboards in Agile environments.';
 
   readonly heroLead =
     'I build enterprise Angular applications with reusable components, REST/RxJS integration, and performance-tuned dashboards—shipping quality UI in Agile teams.';
@@ -134,13 +134,46 @@ export class PortfolioComponent {
       range: 'March 2022 – Present',
       role: 'Angular Frontend Developer',
       points: [
-        'Developed and maintained Angular 14–17 based enterprise applications.',
-        'Built reusable components, reducing development time by ~25%.',
-        'Integrated REST APIs using RxJS and Observables.',
-        'Implemented search, filter, pagination, and lazy loading.',
-        'Optimized UI performance, improving page load by ~30%.',
-        'Resolved 100+ UI and functional bugs.',
-        'Delivered responsive UI with PrimeNG and cross-browser compatibility.',
+        'Built enterprise analytics dashboards for large-scale datasets on https://app.datagardener.com/.',
+        'Delivered features used by 85+ paid users with a strong focus on performance and reliability.',
+        'Implemented dynamic tables with filtering, sorting, pagination, and lazy loading.',
+        'Optimized UI rendering for faster performance and a better user experience.',
+        'Ensured responsive design and cross-browser compatibility.',
+      ],
+    },
+    // {
+    //   company: 'DataGardener Web Application · DataGardener Solutions Ltd',
+    //   // range: 'March 2022 – Present',
+    //   role: 'Angular Frontend Development',
+    //   points: [
+    //     'Built enterprise analytics dashboards for large-scale datasets on https://app.datagardener.com/.',
+    //     'Delivered features used by 85+ paid users with a strong focus on performance and reliability.',
+    //     'Implemented dynamic tables with filtering, sorting, pagination, and lazy loading.',
+    //     'Optimized UI rendering for faster performance and a better user experience.',
+    //     'Ensured responsive design and cross-browser compatibility.',
+    //   ],
+    // },
+    {
+      company: 'UM Admin Panel · DataGardener Solutions Ltd',
+      // range: 'March 2022 – Present',
+      // role: 'Angular Frontend Development',
+      points: [
+        'Built a secure admin panel for internal system management and configuration.',
+        'Implemented role-based access and admin-specific functionalities.',
+        'Developed scalable and maintainable Angular architecture.',
+        'Integrated REST APIs for managing users, permissions, and system data.',
+      ],
+    },
+    {
+      company: 'Connect Plus Application',
+      // range: 'March 2022 – Present',
+      // role: 'Frontend Developer Contribution',
+      points: [
+        'Contributed to the development of a web-based application using Angular and TypeScript.',
+        'Developed and enhanced UI components for improved user experience.',
+        'Integrated REST APIs and handled asynchronous operations using RxJS.',
+        'Fixed UI bugs and improved application stability.',
+        'Worked collaboratively in an Agile development environment.',
       ],
     },
   ];
@@ -158,7 +191,7 @@ export class PortfolioComponent {
   ];
 
   readonly education: EducationItem[] = [
-    { degree: 'MCA', institution: 'Magadh University', period: '2019–2021' },
+    { degree: 'MCA', institution: 'Magadh University', period: '2016–2021' },
     { degree: 'BCA', institution: 'Magadh University', period: '2013–2016' },
     { degree: '10+2', institution: 'CBSE & BSEB Patna', period: '2011–2013' },
   ];
@@ -168,20 +201,52 @@ export class PortfolioComponent {
   contactMessage = '';
 
   readonly formSent = signal(false);
+  readonly formSending = signal(false);
+  readonly formError = signal('');
 
   scrollTo(id: string): void {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  submitContact(): void {
+  async submitContact(): Promise<void> {
     if (!this.contactName.trim() || !this.contactEmailForm.trim() || !this.contactMessage.trim()) {
       return;
     }
-    this.formSent.set(true);
-    this.contactName = '';
-    this.contactEmailForm = '';
-    this.contactMessage = '';
-    window.setTimeout(() => this.formSent.set(false), 5000);
+
+    this.formSending.set(true);
+    this.formError.set('');
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${this.contactEmail}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: this.contactName.trim(),
+          email: this.contactEmailForm.trim(),
+          message: this.contactMessage.trim(),
+          _subject: `Portfolio contact from ${this.contactName.trim()}`,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to send message');
+      }
+
+      this.formSent.set(true);
+      this.contactName = '';
+      this.contactEmailForm = '';
+      this.contactMessage = '';
+      window.setTimeout(() => this.formSent.set(false), 5000);
+    } catch {
+      this.formError.set('Message could not be sent right now. Please email me directly.');
+    } finally {
+      this.formSending.set(false);
+    }
   }
 
   openProject(url: string): void {

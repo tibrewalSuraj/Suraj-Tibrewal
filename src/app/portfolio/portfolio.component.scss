@@ -776,6 +776,16 @@
   margin-bottom: 1rem;
 }
 
+.pf-form-error {
+  padding: 0.85rem 1rem;
+  border-radius: var(--pf-radius-sm);
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  color: #991b1b;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
 .pf-form {
   display: flex;
   flex-direction: column;

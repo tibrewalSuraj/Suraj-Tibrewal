@@ -1,7 +1,7 @@
-<div class="portfolio">
+﻿<div class="portfolio">
   <header class="pf-nav">
     <div class="pf-nav-inner">
-      <a class="pf-logo" href="#" (click)="$event.preventDefault(); scrollTo('hero')" aria-label="ST — Home">
+      <a class="pf-logo" href="#" (click)="$event.preventDefault(); scrollTo('hero')" aria-label="ST â€” Home">
         <img src="/st-logo.png" alt="ST" width="140" height="48" />
       </a>
       <div class="pf-nav-right">
@@ -23,12 +23,12 @@
       <div class="pf-container pf-hero-grid">
         <div class="pf-hero-visual">
           <div class="pf-photo-frame">
-            <img src="/surajPic.png" [alt]="developerName + ' — professional portrait'" width="480" height="480" />
+            <img src="/surajPic.png" [alt]="developerName + ' â€” professional portrait'" width="480" height="480" />
           </div>
           <div class="pf-hero-accent" aria-hidden="true"></div>
         </div>
         <div class="pf-hero-copy">
-          <p class="pf-eyebrow">{{ heroLocationLine }} · {{ contactPhoneDisplay }} · {{ contactEmail }}</p>
+          <p class="pf-eyebrow">{{ heroLocationLine }} Â· {{ contactPhoneDisplay }} Â· {{ contactEmail }}</p>
           <h1 class="pf-hero-title">Hi, I'm <span class="pf-gold-text">{{ developerName }}</span></h1>
           <p class="pf-hero-subtitle">{{ heroTagline }}</p>
           <p class="pf-hero-lead">{{ heroLead }}</p>
@@ -121,7 +121,7 @@
           <ng-template pTemplate="opposite" let-e>
             <div class="pf-tl-opposite">
               <span class="pf-tl-company">{{ e.company }}</span>
-              <span class="pf-tl-range">{{ e.range }}</span>
+              <span class="pf-tl-range">{{ e.range ? e.range : '' }}</span>
             </div>
           </ng-template>
           <ng-template pTemplate="content" let-e>
@@ -144,7 +144,7 @@
           <p class="pf-eyebrow">Selected work</p>
           <h2 class="pf-section-title">Projects</h2>
           <p class="pf-section-desc">
-            Flagship work on the DataGardener web platform—dashboards, analytics UI, and performance at scale.
+            Flagship work on the DataGardener web platformâ€”dashboards, analytics UI, and performance at scale.
           </p>
         </header>
         <div class="pf-project-grid">
@@ -202,7 +202,7 @@
           <p class="pf-eyebrow">Get in touch</p>
           <h2 class="pf-section-title">Contact</h2>
           <p class="pf-section-desc">
-            Based in Delhi, India. Share your Angular or frontend hiring needs—I’ll reply as soon as I can.
+            Based in Delhi, India. Share your Angular or frontend hiring needsâ€”Iâ€™ll reply as soon as I can.
           </p>
         </header>
         <div class="pf-contact-grid">
@@ -235,25 +235,29 @@
           </div>
           <p-card header="Send a message" styleClass="pf-form-card">
             @if (formSent()) {
-            <p class="pf-form-success" role="status">Thanks—your message has been noted. I'll get back to you soon.</p>
+            <p class="pf-form-success" role="status">Thanksâ€”your message has been sent to my email. I'll get back to you soon.</p>
+            }
+            @if (formError()) {
+            <p class="pf-form-error" role="alert">{{ formError() }}</p>
             }
             <form class="pf-form" (ngSubmit)="submitContact()">
               <label class="pf-field">
                 <span>Name</span>
                 <input pInputText name="name" [(ngModel)]="contactName" placeholder="Your name" autocomplete="name"
-                  required />
+                  [disabled]="formSending()" required />
               </label>
               <label class="pf-field">
                 <span>Email</span>
                 <input pInputText type="email" name="email" [(ngModel)]="contactEmailForm" placeholder="you@company.com"
-                  autocomplete="email" required />
+                  autocomplete="email" [disabled]="formSending()" required />
               </label>
               <label class="pf-field">
                 <span>Message</span>
                 <textarea pTextarea name="message" [(ngModel)]="contactMessage" rows="5"
-                  placeholder="Tell me about your project…" required></textarea>
+                  placeholder="Tell me about your projectâ€¦" [disabled]="formSending()" required></textarea>
               </label>
-              <p-button type="submit" label="Send message" icon="pi pi-send" styleClass="pf-btn-primary pf-submit" />
+              <p-button type="submit" [label]="formSending() ? 'Sending...' : 'Send message'" icon="pi pi-send"
+                styleClass="pf-btn-primary pf-submit" [disabled]="formSending()" />
             </form>
           </p-card>
         </div>
@@ -263,7 +267,7 @@
 
   <footer class="pf-footer">
     <div class="pf-container pf-footer-inner">
-      <span class="pf-footer-copy">© {{ year }} {{ developerName }}. All rights reserved.</span>
+      <span class="pf-footer-copy">Â© {{ year }} {{ developerName }}. All rights reserved.</span>
       <span class="pf-footer-note">Built with Angular &amp; PrimeNG</span>
     </div>
   </footer>
